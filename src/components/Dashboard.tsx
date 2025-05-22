@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { fields } from '../data/fields';
 
 type FormData = {
-  cursos: string;
+  asignatura: string;
   manosLevantadas: number;
   recursosBuscados: number;
   participacion: number;
@@ -18,7 +18,7 @@ export default function Dashboard() {
   const handleGoBack = () => navigate('/');
 
   const onSubmit = (data: FormData) => {
-    const cursosArray = data.cursos.split(',').map(c => c.trim());
+    const cursosArray = data.asignatura.split(',').map(c => c.trim());
 
     const formattedData = {
       cursos: cursosArray,

@@ -1,6 +1,6 @@
 export const fields = [
   {
-    name: 'cursos',
+    name: 'asignatura',
     label: 'Tema (Cursos):',
     placeholder: 'Ingresa los temas o cursos',
     helperText: 'Ej: Matemáticas, Historia',

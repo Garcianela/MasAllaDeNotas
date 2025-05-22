@@ -3,12 +3,14 @@ import joblib
 import pandas as pd
 
 app = Flask(__name__)
-import sklearn
-print(sklearn.__version__)
 
 # Cargar modelo y encoder de asignatura (porque asignatura llega en texto)
 modelo = joblib.load('modelo_estudiante.pkl')
 le_asignatura = joblib.load('encoder_asignatura.pkl')
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"mensaje": "Servidor funcionando correctamente"})
 
 @app.route('/predecir', methods=['POST'])
 def predecir_desempeno():
@@ -20,9 +22,9 @@ def predecir_desempeno():
 
         # Crear DataFrame con lo que llega (genero y grado ya son números)
         entrada = pd.DataFrame([{
-            'genero': datos['genero'],        # ya número
-            'grado': datos['grado'],          # ya número
-            'cursos': asignatura_cod,         # codificado aquí
+            'genero': datos['genero'],
+            'grado': datos['grado'],
+            'cursos': asignatura_cod,
             'manosLevantadas': datos['manos_levantadas'],
             'recursosBuscados': datos['recursos_visitados'],
             'diasAusentes': datos['dias_de_ausencia'],
@@ -30,8 +32,21 @@ def predecir_desempeno():
         }])
         entrada = entrada[['genero', 'grado', 'cursos', 'manosLevantadas', 'recursosBuscados', 'participacion', 'diasAusentes']]
         prediccion = modelo.predict(entrada)[0]
-        prediccion = int(prediccion)  # Esto es clave
-        return jsonify({"desempeno_predicho": prediccion})
+        prediccion = float(prediccion) * 100
+        prediccion = round(prediccion, 2)
+
+        respuesta = {
+            "desempeno_predicho": prediccion,
+            "datos_usados": {
+                "cursos": int(asignatura_cod),
+                "manosLevantadas": datos['manos_levantadas'],
+                "recursosBuscados": datos['recursos_visitados'],
+                "diasAusentes": datos['dias_de_ausencia'],
+                "participacion": datos['participacion']
+            }
+        }
+
+        return jsonify(respuesta)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400

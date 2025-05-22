@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import joblib
 import pandas as pd
 
 app = Flask(__name__)
+CORS(app, origins=[
+    "http://localhost:5173",
+    "https://mas-alla-de-las-notas.netlify.app"
+])
 
 # Cargar modelo y encoder de asignatura (porque asignatura llega en texto)
 modelo = joblib.load('modelo_estudiante.pkl')

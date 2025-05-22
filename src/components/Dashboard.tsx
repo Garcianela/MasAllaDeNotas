@@ -2,13 +2,20 @@ import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fields } from '../data/fields';
+import { getNumberCourses } from '../utils/courses';
+import { postPrediction } from '../services/prediction';
 
 type FormData = {
+  genero?: number;
+  grado?: number;
   asignatura: string;
-  manosLevantadas: number;
-  recursosBuscados: number;
+  manos_levantadas: number;
+  recursos_visitados: number;
+  dias_de_ausencia: number;
   participacion: number;
-  diasAusentes: number;
+}
+export type SendData = Omit<FormData, 'asignatura'> & {
+  asignatura: number;
 }
 
 export default function Dashboard() {
@@ -17,18 +24,19 @@ export default function Dashboard() {
 
   const handleGoBack = () => navigate('/');
 
-  const onSubmit = (data: FormData) => {
-    const cursosArray = data.asignatura.split(',').map(c => c.trim());
-
-    const formattedData = {
-      cursos: cursosArray,
-      manosLevantadas: Number(data.manosLevantadas),
-      recursosBuscados: Number(data.recursosBuscados),
+  const onSubmit = async (data: FormData) => {
+    const formattData = {
+      genero: 1,
+      grado: 10,
+      asignatura: getNumberCourses(data.asignatura),
+      manos_levantadas: Number(data.manos_levantadas),
+      recursos_visitados: Number(data.recursos_visitados),
       participacion: Number(data.participacion),
-      diasAusentes: Number(data.diasAusentes),
-    };
-
-    console.log("Datos listos para enviar:", formattedData);
+      dias_de_ausencia: Number(data.dias_de_ausencia),
+    }
+    console.log("datos del front:", formattData);
+    const getData = await postPrediction(formattData);
+    console.log("datos del back:", getData);
     reset();
   };
 

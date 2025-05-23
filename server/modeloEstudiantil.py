@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import joblib
 
 # Cargar datos
-df = pd.read_csv('rendimientoEstudiantilOptimo.csv')  # Reemplaza con tu archivo real
+df = pd.read_csv('rendimientoEstudiantilOptimo.csv')  # Dataset de datos reales
 
 # Codificadores
 le_asignatura = LabelEncoder()

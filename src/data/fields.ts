@@ -8,9 +8,9 @@ export const fields = [
   },
   {
     name: 'manos_levantadas',
-    label: 'Manos levantadas en clase',
-    placeholder: 'Cantidad de manos levantadas',
-    helperText: 'Número de veces que el estudiante levantó la mano',
+    label: 'Asistencia a otros estudiantes',
+    placeholder: 'Cantidad de veces que ayudo a otros estudiantes',
+    helperText: 'Número de veces que el estudiante ayudo a otros',
     type: 'number',
   },
   {
@@ -22,9 +22,9 @@ export const fields = [
   },
   {
     name: 'participacion',
-    label: 'Participación en discusiones',
+    label: 'Participación en discusiones en la semana',
     placeholder: 'Cantidad de intervenciones',
-    helperText: 'Ej: 3 Participaciones en clase',
+    helperText: 'Ej: 3 Participaciones en la semana',
     type: 'number',
   },
   {
